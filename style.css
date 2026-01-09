@@ -344,7 +344,6 @@ label.error {
 
   /* 1. BACKGROUND UPDATE: Full Screen Gradient */
   .page-wrapper {
-    background: linear-gradient(180deg, #185a9d 0%, #b65cf1 100%);
     padding: 0;
     flex-direction: column;
     justify-content: flex-start;
@@ -355,6 +354,7 @@ label.error {
   /* --- HEADER SECTION CHANGES --- */
   .header-section {
     position: relative;
+    background: linear-gradient(180deg, #185a9d 0%, #b65cf1 100%);
     display: block;
     width: 100%;
     max-width: 100%;
