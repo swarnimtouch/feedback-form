@@ -30,54 +30,48 @@ $(document).ready(function () {
   input.addEventListener("input", enforceIndiaLimit);
   enforceIndiaLimit();
 
-  $(".star-rating .fa-star").on("click", function () {
-    var rating = $(this).data("value");
-    $("#ratingInput").val(rating);
-    $(".star-rating .fa-star")
-      .removeClass("selected fa-solid")
-      .addClass("fa-regular");
-    $(this).addClass("selected fa-solid").removeClass("fa-regular");
-    $(this).prevAll().addClass("selected fa-solid").removeClass("fa-regular");
+  const $stars = $(".star-rating .fa-star");
+  const $ratingInput = $("#ratingInput");
+
+  function setStars(rating) {
+    $stars.each(function () {
+      const value = $(this).data("value");
+      if (value <= rating) {
+        $(this).addClass("fa-solid selected").removeClass("fa-regular");
+      } else {
+        $(this).removeClass("fa-solid selected").addClass("fa-regular");
+      }
+    });
+  }
+
+  $stars.on("click touchend", function (e) {
+    e.preventDefault();
+    const rating = $(this).data("value");
+    $ratingInput.val(rating);
+    setStars(rating);
     $("#feedbackForm").validate().element("#ratingInput");
   });
 
-  $(".star-rating .fa-star").hover(
-    function () {
-      $(".star-rating .fa-star").removeClass("fa-solid").addClass("fa-regular");
-      $(this).addClass("fa-solid").removeClass("fa-regular");
-      $(this).prevAll().addClass("fa-solid").removeClass("fa-regular");
-    },
-    function () {
-      $(".star-rating .fa-star").removeClass("fa-solid").addClass("fa-regular");
-      $(".star-rating .fa-star.selected")
-        .addClass("fa-solid")
-        .removeClass("fa-regular");
-      $(".star-rating .fa-star.selected")
-        .prevAll()
-        .addClass("fa-solid")
-        .removeClass("fa-regular");
-    }
-  );
+  $stars.on("mouseenter touchstart", function () {
+    const rating = $(this).data("value");
+    setStars(rating);
+  });
+
+  $stars.on("mouseleave touchend", function () {
+    setStars($ratingInput.val() || 0);
+  });
+
+  setStars($ratingInput.val() || 0);
 
   $("#feedbackForm").validate({
     ignore: [],
     rules: {
       fullName: "required",
-      mobileNo: {
-        required: true,
-        minlength: 10,
-        number: true,
-      },
-      email: {
-        required: true,
-        email: true,
-      },
+      mobileNo: { required: true, minlength: 10, number: true },
+      email: { required: true, email: true },
       orgName: "required",
       hiredServices: "required",
-      rating: {
-        required: true,
-        min: 1,
-      },
+      rating: { required: true, min: 1 },
     },
     messages: {
       fullName: "Please enter your Name",
@@ -93,33 +87,24 @@ $(document).ready(function () {
     },
     errorElement: "label",
     errorPlacement: function (error, element) {
-      if (element.attr("name") == "rating") {
-        error.insertAfter(".star-rating");
-      } else if (element.attr("name") == "mobileNo") {
-        error.insertAfter(element.closest(".iti"));
-      } else if (element.parent(".input-group").length) {
-        error.insertAfter(element.parent());
-      } else {
-        error.insertAfter(element);
-      }
+      if (element.attr("name") == "rating") error.insertAfter(".star-rating");
+      else if (element.attr("name") == "mobileNo") error.insertAfter(element.closest(".iti"));
+      else if (element.parent(".input-group").length) error.insertAfter(element.parent());
+      else error.insertAfter(element);
     },
-    highlight: function (element, errorClass, validClass) {
+    highlight: function (element) {
       $(element).addClass("is-invalid").removeClass("is-valid");
     },
-    unhighlight: function (element, errorClass, validClass) {
+    unhighlight: function (element) {
       $(element).removeClass("is-invalid").addClass("is-valid");
     },
     submitHandler: function (form) {
       var successModal = new bootstrap.Modal(document.getElementById("successModal"));
       successModal.show();
       form.reset();
-      $(".star-rating .fa-star")
-        .removeClass("selected fa-solid")
-        .addClass("fa-regular");
-      $("#ratingInput").val("");
-      $(form)
-        .find(".is-valid, .is-invalid")
-        .removeClass("is-valid is-invalid");
+      setStars(0);
+      $ratingInput.val("");
+      $(form).find(".is-valid, .is-invalid").removeClass("is-valid is-invalid");
     },
   });
 });
