@@ -44,7 +44,7 @@ $(document).ready(function () {
     });
   }
 
-  $stars.on("click touchend", function (e) {
+  $stars.on("click", function (e) {
     e.preventDefault();
     const rating = $(this).data("value");
     $ratingInput.val(rating);
@@ -52,16 +52,20 @@ $(document).ready(function () {
     $("#feedbackForm").validate().element("#ratingInput");
   });
 
-  $stars.on("mouseenter touchstart", function () {
+  $stars.on("mouseenter", function () {
     const rating = $(this).data("value");
     setStars(rating);
   });
 
-  $stars.on("mouseleave touchend", function () {
+  $stars.on("mouseleave", function () {
     setStars($ratingInput.val() || 0);
   });
 
   setStars($ratingInput.val() || 0);
+
+  $('select[name="hiredServices"]').on("change", function () {
+    $(this).valid();
+  });
 
   $("#feedbackForm").validate({
     ignore: [],
@@ -88,8 +92,10 @@ $(document).ready(function () {
     errorElement: "label",
     errorPlacement: function (error, element) {
       if (element.attr("name") == "rating") error.insertAfter(".star-rating");
-      else if (element.attr("name") == "mobileNo") error.insertAfter(element.closest(".iti"));
-      else if (element.parent(".input-group").length) error.insertAfter(element.parent());
+      else if (element.attr("name") == "mobileNo")
+        error.insertAfter(element.closest(".iti"));
+      else if (element.parent(".input-group").length)
+        error.insertAfter(element.parent());
       else error.insertAfter(element);
     },
     highlight: function (element) {
@@ -99,12 +105,16 @@ $(document).ready(function () {
       $(element).removeClass("is-invalid").addClass("is-valid");
     },
     submitHandler: function (form) {
-      var successModal = new bootstrap.Modal(document.getElementById("successModal"));
+      var successModal = new bootstrap.Modal(
+        document.getElementById("successModal")
+      );
       successModal.show();
       form.reset();
       setStars(0);
       $ratingInput.val("");
-      $(form).find(".is-valid, .is-invalid").removeClass("is-valid is-invalid");
+      $(form)
+        .find(".is-valid, .is-invalid")
+        .removeClass("is-valid is-invalid");
     },
   });
 });
