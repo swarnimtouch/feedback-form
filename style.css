@@ -1,9 +1,11 @@
+/* * GLOBAL STYLES & LAYOUT 
+ */
 body {
   font-family: "Poppins", sans-serif;
   background: #f4f7f6;
   margin: 0;
   padding: 0;
-
+  /* Hide scrollbar on body so only form scrolls (Desktop default) */
   overflow: hidden;
   height: 100vh;
   display: flex;
@@ -11,6 +13,7 @@ body {
   justify-content: center;
 }
 
+/* The split background wrapper */
 .page-wrapper {
   position: relative;
   width: 100%;
@@ -23,26 +26,34 @@ body {
     #9b32e6 100%
   );
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Horizontally Center */
+  align-items: center;     /* Vertically Center */
   padding: 20px;
   overflow-y: auto;
 }
 
+/* * HEADER SECTION (Container for Decor & Mobile Text)
+ * Default: Desktop View 
+ */
 .header-section {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  pointer-events: none; /* Click pass-through */
   z-index: 1;
 }
 
+/* * LOGIC: Show/Hide Elements based on Device
+ */
+
+/* 1. Header Content for MOBILE (Default Hide on Desktop) */
 .header-content-mobile {
   display: none;
 }
 
+/* 2. Header Content for DESKTOP (Default Show) */
 .header-content-desktop {
   display: block;
   margin-bottom: 25px;
@@ -62,9 +73,12 @@ body {
   margin-bottom: 0;
 }
 
+/* * DECORATIVE ELEMENTS (Desktop)
+ */
+
+/* The large "SWARNIMTOUCH" text on the left */
 .deco-text {
   position: fixed;
-
   left: -70px;
   top: 50%;
   transform: translateY(-50%) rotate(-90deg);
@@ -77,6 +91,7 @@ body {
   letter-spacing: 5px;
 }
 
+/* The Quote marks on the right */
 .deco-quote {
   position: absolute;
   top: 100px;
@@ -89,6 +104,8 @@ body {
   z-index: 1;
 }
 
+/* * FORM CARD STYLING
+ */
 .form-container {
   background: #ffffff;
   border-radius: 16px;
@@ -97,14 +114,19 @@ body {
   max-width: 800px;
   position: relative;
   z-index: 10;
-  pointer-events: auto;
+  pointer-events: auto; /* Re-enable clicks */
   margin: 0;
-  max-height: 90vh;
-  overflow-y: auto;
+  
+  /* Scrolling Logic */
+  max-height: 90vh; /* Height limit relative to screen */
+  overflow-y: auto; /* Enable vertical scroll inside the card */
+  
+  /* Scrollbar Styling - HIDE SCROLLBAR BUT KEEP SCROLLING */
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
+/* Chrome, Safari, Opera ke liye scrollbar hide */
 .form-container::-webkit-scrollbar {
   display: none;
 }
@@ -130,6 +152,8 @@ body {
   padding: 0 50px 50px 50px;
 }
 
+/* * INPUT FIELDS
+ */
 .form-label {
   font-size: 14px;
   color: #444;
@@ -163,7 +187,7 @@ body {
 
 .form-control:focus,
 .form-select:focus {
-  border-color: #b65cf1 !important;
+  border-color: #b65cf1 !important; /* Theme ka Purple color */
   background-color: #fff;
   box-shadow: none;
   outline: none;
@@ -180,6 +204,7 @@ textarea.form-control {
   min-height: 100px;
 }
 
+/* Custom styling for the Phone Input group */
 .input-group-text {
   background: #fafafa;
   border: 1px solid #ddd;
@@ -207,47 +232,47 @@ textarea.form-control {
   width: 55px;
 }
 
-/* * STAR RATING */
+/* =========================================
+   STAR RATING - INDUSTRY STANDARD STYLING
+   ========================================= */
 .star-rating {
-    display: flex;
-    gap: 12px;
-    font-size: 30px;
-    cursor: pointer;
-    margin-top: 8px;
-    margin-bottom: 12px;
-    /* Mobile tap highlight color remove karein */
-    -webkit-tap-highlight-color: transparent;
+  display: flex;
+  gap: 15px; /* Mobile touch ke liye gap badhaya */
+  font-size: 32px;
+  cursor: pointer;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  /* Mobile tap highlight remove karein */
+  -webkit-tap-highlight-color: transparent;
+  justify-content: start;
 }
 
+/* Default State (Empty Stars) */
 .star-rating .fa-star {
-    color: #ccc;
-    /* Transition hata diya mobile blink rokne ke liye */
-    transition: none; 
+  color: #e0e0e0; /* Neutral Grey */
+  transition: color 0.2s ease-in-out;
 }
 
-.star-rating .fa-solid {
-    color: #ffc107 !important;
-    filter: drop-shadow(0 2px 4px rgba(255, 193, 7, 0.3));
+/* Selected/Solid State (Via JS .active class) */
+.star-rating .fa-star.active {
+  color: #ffc107 !important; /* Gold */
+  filter: drop-shadow(0 2px 4px rgba(255, 193, 7, 0.3));
 }
 
-.star-rating .fa-star.selected {
-    color: #ffc107 !important;
-    font-weight: 900;
+/* Desktop Only Hover Effects (Prevents Mobile Glitch) */
+/* Ye code sirf tab chalega jab device ke paas mouse (fine pointer) ho */
+@media (hover: hover) and (pointer: fine) {
+  .star-rating .fa-star:hover {
+    transform: scale(1.2); /* Slight zoom on hover */
+  }
+  
+  /* Hover active color (Preview color) */
+  .star-rating .fa-star.hover-active {
+    color: #ffd54f !important; /* Lighter Gold */
+  }
 }
 
-/* Sirf Desktop/Mouse devices ke liye Hover effect */
-@media (hover: hover) {
-    .star-rating .fa-star {
-        transition: color 0.2s, transform 0.2s;
-    }
-    
-    .star-rating i:hover,
-    .star-rating i:hover ~ i {
-        color: #ffd54f;
-        transform: scale(1.1);
-    }
-}
-
+/* Error styling */
 label.error {
   color: #dc3545;
   font-size: 12px;
@@ -255,6 +280,8 @@ label.error {
   display: block;
 }
 
+/* * FOOTER & BUTTON
+ */
 .form-footer {
   background: #f8f9fa;
   padding: 20px 50px;
@@ -292,26 +319,32 @@ label.error {
   color: #ffffff !important;
 }
 
+/* FIX for International Phone Input width */
 .iti {
   width: 100%;
   display: block;
 }
 
+/* Input field styling match karne ke liye */
 .iti input {
   width: 100% !important;
   border-radius: 10px !important;
 }
 
+/* * RESPONSIVE ADJUSTMENTS (Mobile View Updates)
+ */
 @media (max-width: 992px) {
+  
   body {
-    overflow-y: auto;
+    overflow-y: auto; /* Scroll allowed on body */
     height: auto;
     display: block;
     background: #fff;
   }
 
+  /* 1. BACKGROUND UPDATE: Full Screen Gradient */
   .page-wrapper {
-    background: transparent;
+    background: linear-gradient(180deg, #185a9d 0%, #b65cf1 100%);
     padding: 0;
     flex-direction: column;
     justify-content: flex-start;
@@ -319,24 +352,24 @@ label.error {
     min-height: 100vh;
   }
 
+  /* --- HEADER SECTION CHANGES --- */
   .header-section {
-    background: linear-gradient(180deg, #185a9d 0%, #b65cf1 100%);
-
     position: relative;
     display: block;
     width: 100%;
     max-width: 100%;
     height: auto;
-    padding: 60px 20px 80px 60px;
+    padding: 60px 20px 80px 60px; /* Left padding for vertical text */
     color: #fff;
     z-index: 1;
-    margin-bottom: -40px;
+    margin-bottom: -40px; /* Overlap effect */
   }
 
+  /* SHOW Mobile Text */
   .header-content-mobile {
     display: block;
   }
-
+  
   .header-content-mobile h2 {
     font-size: 22px;
     font-weight: 700;
@@ -350,10 +383,14 @@ label.error {
     line-height: 1.5;
   }
 
+  /* HIDE Desktop Text inside Form */
   .header-content-desktop {
     display: none;
   }
 
+  /* --- DECORATIVE ELEMENTS ADJUSTMENT --- */
+  
+  /* Vertical Text */
   .deco-text {
     position: absolute;
     left: -60px;
@@ -365,6 +402,7 @@ label.error {
     font-weight: 600;
   }
 
+  /* Quote Icon */
   .deco-quote {
     position: absolute;
     top: 40px;
@@ -375,11 +413,12 @@ label.error {
     opacity: 0.4;
   }
 
+  /* --- FORM CONTAINER CHANGES --- */
   .form-container {
     width: 100%;
     max-width: 100%;
     margin: 0;
-    border-radius: 25px 25px 0 0;
+    border-radius: 25px 25px 0 0; /* Top rounded corners only */
     padding-bottom: 40px;
     min-height: 60vh;
     z-index: 10;
@@ -410,6 +449,7 @@ label.error {
   }
 }
 
+/* --- MOBILE SPECIFIC FOOTER ADJUSTMENT (Max-Width: 768px) --- */
 @media (max-width: 768px) {
   .form-footer {
     flex-direction: column;
@@ -419,11 +459,11 @@ label.error {
 
   .footer-copyright {
     font-size: 11px;
-    order: 1;
+    order: 1; /* Text first */
   }
 
   .btn-continue {
     width: 100%;
-    order: 2;
+    order: 2; /* Button second */
   }
 }
